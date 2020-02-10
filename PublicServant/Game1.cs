@@ -9,11 +9,17 @@ namespace PublicServant.Desktop
     /// </summary>
     public class Game1 : Game
     {
+        //1) declare new variable to load servant into memory
+        Texture2D servantTexture;
+        Vector2 servantPosition;
+        float servantSpeed;
+        //both variables for drawing
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public Game1()
         {
+            //searches for content in the content
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -27,6 +33,8 @@ namespace PublicServant.Desktop
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            servantPosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
+            servantSpeed = 300f;
 
             base.Initialize();
         }
@@ -41,6 +49,8 @@ namespace PublicServant.Desktop
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            //2) intialize private servant variable
+            servantTexture = Content.Load<Texture2D>("servant");
         }
 
         /// <summary>
@@ -63,6 +73,34 @@ namespace PublicServant.Desktop
                 Exit();
 
             // TODO: Add your update logic here
+            var kstate = Keyboard.GetState();
+
+            //servant movement and speed
+            if (kstate.IsKeyDown(Keys.Up))
+                servantPosition.Y -= servantSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (kstate.IsKeyDown(Keys.Down))
+                servantPosition.Y += servantSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (kstate.IsKeyDown(Keys.Left))
+                servantPosition.X -= servantSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (kstate.IsKeyDown(Keys.Right))
+                servantPosition.X += servantSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //servant cannot leave window
+            if (kstate.IsKeyDown(Keys.Right))
+                servantPosition.X += servantSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (servantPosition.X > graphics.PreferredBackBufferWidth - servantTexture.Width / 2)
+                servantPosition.X = graphics.PreferredBackBufferWidth - servantTexture.Width / 2;
+            else if (servantPosition.X < servantTexture.Width / 2)
+                servantPosition.X = servantTexture.Width / 2;
+
+            if (servantPosition.Y > graphics.PreferredBackBufferHeight - servantTexture.Height / 2)
+                servantPosition.Y = graphics.PreferredBackBufferHeight - servantTexture.Height / 2;
+            else if (servantPosition.Y < servantTexture.Height / 2)
+                servantPosition.Y = servantTexture.Height / 2;
 
             base.Update(gameTime);
         }
@@ -76,6 +114,21 @@ namespace PublicServant.Desktop
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(
+            servantTexture,
+            servantPosition,
+            null,
+            Color.White,
+            0f,
+            new Vector2(servantTexture.Width / 2, servantTexture.Height / 2),
+            Vector2.One,
+            SpriteEffects.None,
+            0f
+            );
+            spriteBatch.End();
+
+
 
             base.Draw(gameTime);
         }
