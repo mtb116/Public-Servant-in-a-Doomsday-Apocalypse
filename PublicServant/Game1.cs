@@ -13,6 +13,7 @@ namespace PublicServant.Desktop
     {
         //1) declare new variable to load servant into memory
         Player player = new Player();
+
         //both variables for drawing
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -23,6 +24,8 @@ namespace PublicServant.Desktop
             graphics = new GraphicsDeviceManager(this);
 
             player.PlayerPosition(graphics);
+
+
             Content.RootDirectory = "Content";
         }
 
@@ -39,7 +42,6 @@ namespace PublicServant.Desktop
             //player settings from Player class
             var servantPosition = player.servantPosition;
             var servantSpeed = player.servantPosition;
-
             base.Initialize();
         }
 
@@ -53,6 +55,7 @@ namespace PublicServant.Desktop
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
             //2) intialize private servant variable
             player.servantTexture = Content.Load<Texture2D>("servant");
         }
@@ -97,6 +100,16 @@ namespace PublicServant.Desktop
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            Texture2D rect = new Texture2D(graphics.GraphicsDevice, 80, 30);
+
+            Color[] data = new Color[80 * 30];
+            for (int i = 0; i < data.Length; ++i) data[i] = Color.Chocolate;
+            rect.SetData(data);
+
+            Vector2 coor = new Vector2(10, 20);
+            spriteBatch.Draw(rect, coor, Color.White);
+
+
             spriteBatch.Draw(
             player.servantTexture,
             player.servantPosition,
@@ -108,6 +121,7 @@ namespace PublicServant.Desktop
             SpriteEffects.None,
             0f
             );
+
             spriteBatch.End();
 
 
