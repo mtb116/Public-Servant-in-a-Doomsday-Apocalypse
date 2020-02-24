@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 
 namespace PublicServant.Desktop
 {
@@ -9,12 +11,18 @@ namespace PublicServant.Desktop
     /// </summary>
     public class Game1 : Game
     {
+        //1) declare new variable to load servant into memory
+        Player player = new Player();
+        //both variables for drawing
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public Game1()
         {
+            //searches for content in the content
             graphics = new GraphicsDeviceManager(this);
+
+            player.PlayerPosition(graphics);
             Content.RootDirectory = "Content";
         }
 
@@ -27,6 +35,10 @@ namespace PublicServant.Desktop
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            //player settings from Player class
+            var servantPosition = player.servantPosition;
+            var servantSpeed = player.servantPosition;
 
             base.Initialize();
         }
@@ -41,6 +53,8 @@ namespace PublicServant.Desktop
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            //2) intialize private servant variable
+            player.servantTexture = Content.Load<Texture2D>("servant");
         }
 
         /// <summary>
@@ -63,8 +77,14 @@ namespace PublicServant.Desktop
                 Exit();
 
             // TODO: Add your update logic here
+            player.PlayerMovement(gameTime, graphics);
 
             base.Update(gameTime);
+        }
+
+        private void Console(float v)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -76,6 +96,21 @@ namespace PublicServant.Desktop
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(
+            player.servantTexture,
+            player.servantPosition,
+            null,
+            Color.White,
+            0f,
+            new Vector2(player.servantTexture.Width / 2, player.servantTexture.Height / 2),
+            Vector2.One,
+            SpriteEffects.None,
+            0f
+            );
+            spriteBatch.End();
+
+
 
             base.Draw(gameTime);
         }
