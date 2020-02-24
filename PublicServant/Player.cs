@@ -22,7 +22,8 @@ namespace PublicServant.Desktop
             diagonal = servantSpeed * (float)0.75;
         }
 
-        public void PlayerPosition(GraphicsDeviceManager graphics) {
+        public void PlayerPosition(GraphicsDeviceManager graphics)
+        {
             servantPosition = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
         }
 
@@ -65,7 +66,7 @@ namespace PublicServant.Desktop
                 servantPosition.Y -= servantSpeed * gameSeconds;
             }
             //East Movement
-            else if (kstate.IsKeyDown(Keys.D)) 
+            else if (kstate.IsKeyDown(Keys.D))
             {
                 servantPosition.X += servantSpeed * gameSeconds;
             }
